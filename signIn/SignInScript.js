@@ -54,7 +54,7 @@ function displayError(inputField, errorMessage) {
 // Function to clear error messages
 function clearError(inputField) {
     const errorDiv = inputField.nextElementSibling;
-    errorDiv.innerText = '';
+    // errorDiv.innerText = '';
     errorDiv.style.display = 'none';
 }
 
@@ -123,9 +123,40 @@ document.querySelector("#signup-confirm-password").addEventListener("input", () 
 });
 
 // Event listener for the "Signup" button
-document.getElementById('signup-button').addEventListener('click', (event) => {
-    event.preventDefault();
-    if (passwordMatch()) {
-        alert('User registration successful');
+document.getElementById('signup-form').addEventListener('submit', (event) => {
+    event.preventDefault()
+    if (!passwordMatch()) return alert('Password have to match!')
+
+    const form = event.target
+    const formData = new FormData(form)
+    for (const value of formData.values()) {
+        console.log(value);
     }
+    let jsonData = {};
+    formData.forEach((value, key) => {
+        jsonData[key] = value;
+    });
+    console.log(jsonData)
+// Send JSON data to the backend
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle response from the backend
+            console.log(data);
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('There was a problem with the fetch operation:', error);
+        });
 });

@@ -1,9 +1,12 @@
 require('dotenv').config(); // Load environment variables from .env file
 const bcrypt = require('bcrypt');
+const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
+app.use(cors());
+app.use(express.static('public'));
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -57,10 +60,12 @@ app.use(bodyParser.json());
 
 // Routes
 app.post('/signup', async (req, res) => {
+    console.log(req.body)
     // Hash the password before saving it to the database
     const saltRounds = 10;
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+        console.log(hashedPassword);
         const newUser = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
@@ -68,8 +73,9 @@ app.post('/signup', async (req, res) => {
             country: req.body.country,
             gender: req.body.gender,
             email: req.body.email,
-            password: hashedPassword, // Store hashed password
+            password: hashedPassword
         });
+        console.log('hey')
         await newUser.save();
         console.log('User registered successfully:', newUser);
         res.status(201).json({ message: 'User registered successfully' });
