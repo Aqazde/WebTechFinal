@@ -34,6 +34,44 @@ document.querySelector("#login-email").addEventListener("input", (event) => {
         event.target.setCustomValidity("");
     }
 });
+
+
+// Function to handle form submission for login
+document.querySelector("form.login").addEventListener("submit", async (event) => {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    // Get the email and password from the login form
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    try {
+        // Send a POST request to the server with the login credentials
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        // Parse the JSON response
+        const data = await response.json();
+
+        // Check if the response is successful
+        if (response.ok) {
+            // Redirect to the appropriate page based on the response
+            window.location.href = data.redirectUrl; // Assuming the server sends a redirect URL
+        } else {
+            // Display an error message if login failed
+            alert(data.error || "Login failed");
+        }
+    } catch (error) {
+        console.error("Error logging in:", error);
+        alert("An error occurred. Please try again later.");
+    }
+});
+
+
 // Validate email for signup form
 document.querySelector("#signup-email").addEventListener("input", (event) => {
     const email = event.target.value;
@@ -54,7 +92,6 @@ function displayError(inputField, errorMessage) {
 // Function to clear error messages
 function clearError(inputField) {
     const errorDiv = inputField.nextElementSibling;
-    // errorDiv.innerText = '';
     errorDiv.style.display = 'none';
 }
 

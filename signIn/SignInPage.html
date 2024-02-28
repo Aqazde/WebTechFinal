@@ -34,13 +34,15 @@
             <label for="signup" class="slide signup">Sign up</label>
             <div class="slide-tab"></div>
         </div>
+
         <div class="form-inner">
+
             <form action="" class="login">
                 <div class="field">
                     <input type="text" id="login-email" placeholder="Email address" required />
                 </div>
                 <div class="field">
-                    <input type="password" placeholder="Password" required />
+                    <input type="password" id="login-password" placeholder="Password" required />
                 </div>
                 <div class="pass-link"><a href="#">Forgot Password?</a></div>
                 <div class="field btn">
@@ -49,6 +51,8 @@
                 </div>
                 <div class="signup-link">New member? <a href="#">Signup now</a></div>
             </form>
+
+
 
             <form id="signup-form" action="http://localhost:3000/signup" class="signup" method="post">
                 <div class="field">
@@ -85,8 +89,9 @@
                     <div class="btn-layer"></div>
                     <input type="submit" id="signup-button" value="Signup" disabled />
                 </div>
-
             </form>
+
+
 
         </div>
     </div>

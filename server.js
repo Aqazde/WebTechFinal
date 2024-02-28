@@ -1,12 +1,16 @@
-require('dotenv').config(); // Load environment variables from .env file
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
+
 const app = express();
 app.use(cors());
 app.use(express.static('public'));
+
+
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -86,9 +90,73 @@ app.post('/signup', async (req, res) => {
 });
 
 
-app.post('/login', async (req, res) => {
-    // Authenticate user
-    // Generate and send JWT token
+
+
+
+// Function to handle user login
+async function loginUser(req, res) {
+    const { email, password } = req.body;
+
+    try {
+        // Check if the email exists in the users collection
+        const user = await User.findOne({ email });
+        if (user) {
+            // If the email exists, verify the password
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+            if (isPasswordValid) {
+                // If the password is valid, generate a JWT for the user
+                const token = generateToken(user);
+
+                // Determine if the user is an admin based on their role or any other criteria
+                const isAdmin = user.role === 'admin';
+
+                // Redirect to specific pages based on user role
+                if (isAdmin) {
+                    return res.json({ token, isAdmin: true, redirect: '/admin-dashboard' });
+                } else {
+                    return res.json({ token, isAdmin: false, redirect: '/user-profile' });
+                }
+            }
+        }
+        // If no matching user is found or password is invalid, return an error
+        return res.status(401).json({ error: 'Invalid email or password' });
+    } catch (error) {
+        console.error('Error logging in:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+// Function to generate JWT token
+function generateToken(user) {
+    return jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+}
+
+// Middleware to authenticate users
+function authenticateUser(req, res, next) {
+    // Get the token from the request headers
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({ error: 'Authorization token not provided' });
+    }
+
+    try {
+        // Verify the token
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+        // Attach the decoded token to the request object for further use
+        req.user = decodedToken;
+        // Proceed to the next middleware or route handler
+        next();
+    } catch (error) {
+        console.error('Error authenticating user:', error);
+        return res.status(401).json({ error: 'Invalid token' });
+    }
+}
+
+app.post('/login', loginUser);
+app.get('/user-profile', authenticateUser, (req, res) => {
+    // This route handler will only be reached if the user is authenticated
+    res.sendFile(__dirname + '/userProfilePage.html');
 });
 
 // Start the server
