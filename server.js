@@ -110,12 +110,12 @@ async function loginUser(req, res) {
                 // Determine if the user is an admin based on their role or any other criteria
                 const isAdmin = user.role === 'admin';
 
-                // Redirect to specific pages based on user role
-                if (isAdmin) {
-                    return res.json({ token, isAdmin: true, redirect: '/admin-dashboard' });
-                } else {
-                    return res.json({ token, isAdmin: false, redirect: '/user-profile' });
-                }
+                // Set the redirect URL based on the user role and frontend port
+                const frontendPort = process.env.FRONTEND_PORT || 3000; // Adjust the port as needed
+                const redirectUrl = isAdmin ? `http://localhost:${frontendPort}/admin-dashboard` : `http://localhost:${frontendPort}/user-profile`;
+
+                // Send the response with the token and redirect URL
+                return res.json({ token, redirectUrl });
             }
         }
         // If no matching user is found or password is invalid, return an error
@@ -156,7 +156,7 @@ function authenticateUser(req, res, next) {
 app.post('/login', loginUser);
 app.get('/user-profile', authenticateUser, (req, res) => {
     // This route handler will only be reached if the user is authenticated
-    res.sendFile(__dirname + '/userProfilePage.html');
+    res.sendFile(`${__dirname}/userProfile/userProfilePage.html`);
 });
 
 // Start the server

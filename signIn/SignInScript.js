@@ -59,6 +59,8 @@ document.querySelector("form.login").addEventListener("submit", async (event) =>
 
         // Check if the response is successful
         if (response.ok) {
+            // Store the token in localStorage
+            localStorage.setItem('token', data.token);
             // Redirect to the appropriate page based on the response
             window.location.href = data.redirectUrl; // Assuming the server sends a redirect URL
         } else {

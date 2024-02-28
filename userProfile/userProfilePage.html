@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="icon" type="image/png" href="/img/icons8-favicon.png">
+    <link href="UserStyle.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="../OrderHistoryPage/History.html">Order History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../BonusPage/Bonus.html">Bonuses</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../DeliveryAddressPage/Delivery.html">Delivery Address</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../SupportPage/Support.html">Contact Support</a>
+                </li>
+            </ul>
+        </div>
+        <a href="../../index.html" class="btn btn-primary">Sign Out</a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="https://play-lh.googleusercontent.com/7Ak4Ye7wNUtheIvSKnVgGL_OIZWjGPZNV6TP_3XLxHC-sDHLSE45aDg41dFNmL5COA"
+                         alt="Avatar" class="img-fluid rounded-circle">
+                </div>
+                <div class="col-md-8">
+                    <h2 class="card-title">Adilkhan Adiqde</h2>
+                    <p class="card-text">
+                        <strong>Email:</strong> abvgd@example.com<br>
+                        <strong>Contact Phone:</strong> +1234567890
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section id="to-do-list">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">To-Do List</h3>
+                <ul id="task-list" class="list-group">
+                </ul>
+                <input type="text" id="task" class="form-control" placeholder="Add a new task">
+                <button class="btn btn-primary mt-2" id="addTask">Add Task</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Countdown -->
+<section class="countdown-container">
+    <h3>Countdown Timer</h3>
+    <div class="timer" id="countdown-timer">00:00:00</div>
+    <div class="timer-controls">
+        <input type="number" id="hours" min="0" placeholder="Hours">
+        <input type="number" id="minutes" min="0" placeholder="Minutes">
+        <input type="number" id="seconds" min="0" placeholder="Seconds">
+        <button class="btn btn-primary" id="start-timer">Start</button>
+        <button class="btn btn-secondary" id="resume-timer" disabled>Resume</button>
+        <button class="btn btn-secondary" id="stop-timer">Stop</button>
+    </div>
+</section>
+<audio id="timerSound">
+    <source src="sound-effect1.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+
+<script>
+    // Function to delete a task from the To-Do List
+    function deleteTask(button) {
+        const listItem = button.parentElement.parentElement.parentElement.parentElement;
+        listItem.remove();
+    }
+
+    // Function to mark a task as completed or incomplete
+    function completeTask(button) {
+        const task = button.parentElement.parentElement.querySelector(".task-name");
+        task.classList.toggle("completed-task");
+
+        const completeButton = button;
+        if (task.classList.contains("completed-task")) {
+            completeButton.textContent = "Incomplete";
+            completeButton.style.backgroundColor = "#f7c92f";
+        } else {
+            completeButton.textContent = "Complete";
+            completeButton.style.backgroundColor = "green";
+        }
+    }
+
+
+    // Add a task when the "Add Task" button is clicked
+    document.addEventListener("DOMContentLoaded", function () {
+        const addTaskButton = document.getElementById("addTask");
+        const taskInput = document.getElementById("task");
+        const taskList = document.getElementById("task-list");
+        addTaskButton.addEventListener("click", addTask);
+        // Add a task when the "Enter" key is pressed in the task input field
+        taskInput.addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
+                addTask();
+            }
+        });
+
+
+        // Function to add a new task to the To-Do List
+        function addTask() {
+            const taskText = taskInput.value;
+            if (taskText) {
+                const taskItem = document.createElement("li");
+                taskItem.classList.add("list-group-item");
+                taskItem.innerHTML = `
+                    <div class="task-container">
+                        <div class="added-task">
+                            <div class="task-name larger-text">${taskText}</div>
+                            <div class="task-buttons">
+                                <button class="btn btn-sm btn-danger" onclick="deleteTask(this)">Delete</button>
+                                <button class="btn btn-sm btn-success" onclick="completeTask(this)">Complete</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                taskList.appendChild(taskItem);
+                taskInput.value = "";
+            }
+        }
+    });
+
+
+    // Script code for Countdown Timer
+    const timerDisplay = document.getElementById("countdown-timer");
+    const hoursInput = document.getElementById("hours");
+    const minutesInput = document.getElementById("minutes");
+    const secondsInput = document.getElementById("seconds");
+    const startButton = document.getElementById("start-timer");
+    const stopButton = document.getElementById("stop-timer");
+    const resumeButton = document.getElementById("resume-timer");
+    let timerInterval;
+    let remainingTime = 0;
+    let isTimerRunning = false;
+
+    // Function to update the timer display
+    function updateTimerDisplay() {
+        const hours = String(Math.floor(remainingTime / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((remainingTime % 3600) / 60)).padStart(2, '0');
+        const seconds = String(remainingTime % 60).padStart(2, '0');
+        timerDisplay.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    // Function to show an alert when the timer is up
+    function timeIsUp() {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        startButton.removeAttribute('disabled');
+        resumeButton.setAttribute('disabled', 'disabled');
+        alert("Time is UP");
+        // Play the sound effect
+        const timerSound = document.getElementById("timerSound");
+        timerSound.play();
+        // Add animation to the countdown timer
+        const timerDisplay = document.getElementById("countdown-timer");
+        timerDisplay.classList.add("flash");
+    }
+
+
+
+    // Event listener for the "Start" button
+    startButton.addEventListener("click", function () {
+        if (!isTimerRunning) {
+            const hours = parseInt(hoursInput.value) || 0;
+            const minutes = parseInt(minutesInput.value) || 0;
+            const seconds = parseInt(secondsInput.value) || 0;
+
+            remainingTime = hours * 3600 + minutes * 60 + seconds;
+            updateTimerDisplay();
+            isTimerRunning = true;
+
+            timerInterval = setInterval(function () {
+                if (remainingTime > 0) {
+                    remainingTime--;
+                    updateTimerDisplay();
+                } else {
+                    timeIsUp();
+                }
+            }, 1000);
+
+            startButton.setAttribute('disabled', 'disabled');
+            resumeButton.setAttribute('disabled', 'disabled');
+            stopButton.removeAttribute('disabled');
+        }
+    });
+
+    // Event listener for the "Stop" button
+    stopButton.addEventListener("click", function () {
+        if (isTimerRunning) {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            startButton.removeAttribute('disabled');
+            resumeButton.removeAttribute('disabled');
+            stopButton.setAttribute('disabled', 'disabled');
+        }
+        // Stop the flash animation and reset it
+        timerDisplay.classList.remove("flash");
+    });
+
+    // Event listener for the "Resume" button
+    resumeButton.addEventListener("click", function () {
+        if (!isTimerRunning) {
+            isTimerRunning = true;
+
+            timerInterval = setInterval(function () {
+                if (remainingTime > 0) {
+                    remainingTime--;
+                    updateTimerDisplay();
+                } else {
+                    timeIsUp();
+                }
+            }, 1000);
+
+            startButton.setAttribute('disabled', 'disabled');
+            resumeButton.setAttribute('disabled', 'disabled');
+            stopButton.removeAttribute('disabled');
+        }
+    });
+</script>
+</body>
+</html>
