@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+html, body {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+    background: linear-gradient(135deg, white, navajowhite);
+    background-size: 100% 100%;
+}
+.navbar {
+    background-color: whitesmoke;
+    border-bottom: 1px solid #ccc;
+    display: block;
+    justify-content: space-between;
+    padding: 10px 20px;
+    position: fixed;
+}
+
+.navbar a {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+    margin: 0 20px;
+}
+
+.navbar a:hover {
+    color: #0a53be;
+}
+::selection {
+    background: #1a75ff;
+    color: whitesmoke;
+}
+
+.wrapper {
+    overflow: hidden;
+    max-width: 400px;
+    background: whitesmoke;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 15px 20px rgba(0,0,0,0.1);
+}
+.wrapper .title-text {
+    display: flex;
+    width: 200%;
+}
+.wrapper .title {
+    width: 50%;
+    font-size: 35px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265,1.55);
+}
+.wrapper .slide-control {
+    position: relative;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    overflow: hidden;
+    margin: 30px 0 10px 0;
+    justify-content: space-between;
+    border: 1px solid lightgray;
+    border-radius: 15px;
+}
+.slide-control .slide {
+    height: 100%;
+    width: 100%;
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    z-index: 1;
+    transition: all 0.5s ease;
+}
+.slide-control label.signup {
+    color: #000;
+}
+.slide-control .slide-tab {
+    position: absolute;
+    height: 100%;
+    width: 50%;
+    left: 0;
+    z-index: 0;
+    border-radius: 15px;
+    background-color: black;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265,1.55);
+}
+input[type="radio"] {
+    display: none;
+}
+#signup:checked ~ .slide-tab {
+    left: 50%;
+}
+#signup:checked ~ label.signup {
+    color: #FFFFFF;
+    cursor: default;
+    user-select: none;
+}
+#signup:checked ~label.login {
+    color: #000000;
+}
+#login:checked ~label.signup {
+    color: #000000;
+}
+#login:checked ~ label.login {
+    cursor: default;
+    user-select: none;
+}
+.wrapper .form-container {
+    width: 100%;
+    overflow: hidden;
+}
+.form-container .form-inner {
+    display: flex;
+    width: 200%;
+}
+.form-container .form-inner form {
+    width: 50%;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.26,1.5);
+}
+.form-inner form .field {
+    height: 50px;
+    width: 100%;
+    margin-top: 20px;
+}
+.form-inner form .field input {
+    height: 100%;
+    width: 100%;
+    outline: none;
+    padding-left: 15px;
+    border-radius: 15px;
+    border: 1px solid grey;
+    border-bottom-width: 2px;
+    font-size: 15px;
+    transition: all 0.5s ease;
+}
+.form-inner form .field input:focus {
+    border-color: #1a75ff;
+}
+.form-inner form .field input::placeholder {
+    color: grey;
+    transition: all 0.5s ease;
+}
+form .field input:focus::placeholder {
+    color: #1a75ff;
+}
+.form-inner form .pass-link {
+    margin-top: 5px;
+}
+.form-inner form .signup-link {
+    text-align: center;
+    margin-top: 30px;
+}
+.form-inner form .pass-link a, .form-inner form .signup-link a {
+    color: #1a75ff;
+    text-decoration: none;
+}
+
+@media (max-width: 576px) {
+
+}
+@media (min-width: 577px) and (max-width: 992px) {
+
+}
+@media (min-width: 993px) {
+
+}

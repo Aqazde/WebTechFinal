@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <link rel="icon" type="image/png" href="/img/icons8-favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="SignInStyle.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/index.html">Home page</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="wrapper">
+    <div class="title-text">
+        <div class="title login">Log in</div>
+        <div class="title signup">Sign up</div>
+    </div>
+    <div class="form-container">
+        <div class="slide-control">
+            <input type="radio" name="slide" id="login" checked />
+            <input type="radio" name="slide" id="signup" />
+            <label for="login" class="slide login">Log in</label>
+            <label for="signup" class="slide signup">Sign up</label>
+            <div class="slide-tab"></div>
+        </div>
+        <div class="form-inner">
+            <form action="" class="login">
+                <div class="field">
+                    <input type="text" id="login-email" placeholder="Email address" required />
+                </div>
+                <div class="field">
+                    <input type="password" placeholder="Password" required />
+                </div>
+                <div class="pass-link"><a href="#">Forgot Password?</a></div>
+                <div class="field btn">
+                    <div class="btn-layer"></div>
+                    <input type="submit" value="Login" />
+                </div>
+                <div class="signup-link">New member? <a href="#">Signup now</a></div>
+            </form>
+
+            <form action="/signup" class="signup">
+                <div class="field">
+                    <input type="text" id="signup-first-name" placeholder="First Name" required>
+                </div>
+                <div class="field">
+                    <input type="text" id="signup-last-name" placeholder="Last Name" required>
+                </div>
+                <div class="field">
+                    <input type="number" id="signup-age" placeholder="Age" required>
+                </div>
+                <div class="field">
+                    <input type="text" id="signup-country" placeholder="Country" required>
+                </div>
+                <div class="field">
+                    <select id="signup-gender" required>
+                        <option value="" disabled selected>Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <input type="text" id="signup-email" placeholder="Email address" required>
+                </div>
+                <div class="field">
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                </div>
+                <div class="field">
+                    <input type="password" id="signup-confirm-password" placeholder="Confirm password" required>
+                    <div class="error-message"></div> <!-- New div for error message -->
+                </div>
+                <div class="field btn">
+                    <div class="btn-layer"></div>
+                    <input type="submit" id="signup-button" value="Signup" disabled />
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+    <script src="SignInScript.js"></script>
+</body>
+</html>
