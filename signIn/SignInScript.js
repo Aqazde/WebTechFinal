@@ -53,16 +53,14 @@ document.querySelector("form.login").addEventListener("submit", async (event) =>
             },
             body: JSON.stringify({ email, password })
         });
-
+        console.log("Response from server:", response); // Debugging statement
         // Parse the JSON response
         const data = await response.json();
-
+        console.log("Response data:", data); // Debugging statement
         // Check if the response is successful
         if (response.ok) {
-            // Store the token in localStorage
-            localStorage.setItem('token', data.token);
             // Redirect to the appropriate page based on the response
-            window.location.href = data.redirectUrl; // Assuming the server sends a redirect URL
+            window.location.href = "http://localhost:3000/user-profile"; // Assuming the server sends a redirect URL
         } else {
             // Display an error message if login failed
             alert(data.error || "Login failed");
@@ -94,7 +92,7 @@ function displayError(inputField, errorMessage) {
 // Function to clear error messages
 function clearError(inputField) {
     const errorDiv = inputField.nextElementSibling;
-    errorDiv.style.display = 'none';
+    // errorDiv.style.display = 'none';
 }
 
 // Check if the password and confirm password fields match
@@ -148,7 +146,7 @@ document.querySelector("#signup-email").addEventListener("input", (event) => {
     } else if (!isEmailValid(email)) {
         displayError(event.target, 'Please enter a valid email address');
     } else {
-        clearError(event.target);
+       // clearError(event.target);
     }
     toggleSignupButton();
 });
